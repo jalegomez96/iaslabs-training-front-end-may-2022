@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class ProductService {
 
-  private readonly changes = new BehaviorSubject<boolean>(false);
+  private readonly changes$ = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
@@ -35,7 +35,7 @@ export class ProductService {
   }
 
   getChanges(): Observable<boolean> {
-    return this.changes.asObservable().pipe(
+    return this.changes$.asObservable().pipe(
       tap( () => {
         console.log('Executing change...');
       })
@@ -43,7 +43,7 @@ export class ProductService {
   }
 
   setChanges(value: boolean): void {
-    this.changes.next(value);
+    this.changes$.next(value);
   }
 
 }

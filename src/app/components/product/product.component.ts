@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { ProductModel } from 'src/app/core/models/product.model';
 import { ProductService } from 'src/app/shared/services/product-service/product.service';
 
@@ -9,8 +10,9 @@ import { ProductService } from 'src/app/shared/services/product-service/product.
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  suscribe$: Subscription;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -19,6 +21,8 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.listenerFieldTypeOfProduct();
+    console.log(window.localStorage.getItem('userApp')); // remove item - is the same function
   }
 
   createForm(): void {
@@ -44,5 +48,21 @@ export class ProductComponent implements OnInit {
     } else {
       alert('El Formulario no se encuentra valido.');
     }
+  }
+
+  onChangeTypeOfProduct(): void {
+    console.log(this.form.get('typeOfProduct').value);
+  }
+
+  listenerFieldTypeOfProduct(): void {
+    this.suscribe$ = this.form.get('typeOfProduct').valueChanges.subscribe(
+      (typeOfProduct: string) => {
+        console.log('Executing lintener type of product: ', typeOfProduct);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+      this.suscribe$.unsubscribe();
   }
 }
