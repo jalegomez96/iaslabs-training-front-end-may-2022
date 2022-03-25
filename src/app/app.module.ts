@@ -17,6 +17,8 @@ import { CategoryService } from './shared/services/category-service/category.ser
 import { LoginComponent } from './components/login/login.component';
 import { ProductMainComponent } from './components/product-main/product-main.component';
 import { LoginGuard } from './shared/guards/login-guard/login.guard';
+import { RickAndMortyService } from './shared/services/rick-and-morty-api/rick-and-morty.service';
+import { CharacterComponent } from './components/character/character.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { LoginGuard } from './shared/guards/login-guard/login.guard';
     ProductComponent,
     ProductsListComponent,
     LoginComponent,
-    ProductMainComponent
+    ProductMainComponent,
+    CharacterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,7 @@ import { LoginGuard } from './shared/guards/login-guard/login.guard';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [ProductService, CategoryService, LoginGuard],
+  providers: [ProductService, CategoryService, LoginGuard, RickAndMortyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

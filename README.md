@@ -51,3 +51,5 @@ para asignar valores a un campo del formulario se realiza con la siguiente sinta
 
 2. En el archivo "products.component.html" cambiar el "select" de la linea 14, para que las opciones mostradas sean a través del servicio de categorias (category-service)
 
+#### Documentation about Rick and Morty Apo
+https://rickandmortyapi.com/documentation
