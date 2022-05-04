@@ -1,20 +1,34 @@
 <div class="card p-1">
   <table class="table">
-    <caption>{{ captionText }}</caption>
+    <caption>
+      {{
+        captionText
+      }}
+    </caption>
     <thead>
       <tr>
         <th scope="col">Product ID</th>
         <th scope="col">Type of product</th>
         <th scope="col">Name</th>
         <th scope="col">Price</th>
+        <th scope="col">Discount</th>
+        <th scope="col">Final Price</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of listOfProducts, let i=index; trackBy: trackByItems">
+      <tr
+        *ngFor="
+          let product of listOfProducts;
+          let i = index;
+          trackBy: trackByItems
+        "
+      >
         <td>{{ product.productId }}</td>
         <td>{{ transformType(product.typeOfProduct) }}</td>
         <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
+        <td>{{ product.price | currency }}</td>
+        <td>{{ transformDiscount(product.typeOfProduct) | percent }}</td>
+        <td>{{ applyDiscount(product) | currency }}</td>
       </tr>
     </tbody>
   </table>
