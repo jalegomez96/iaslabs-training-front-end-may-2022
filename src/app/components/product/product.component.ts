@@ -42,21 +42,24 @@ export class ProductComponent implements OnInit, OnDestroy {
       typeOfProduct: [undefined, [Validators.required]],
       name: ['', [Validators.required]],
       price: [0, [Validators.required]],
+      discountApply: [false],
     });
   }
 
   callService(): void {
-    merge<CategoryModel[], DiscountModel[]>(this.getCategories(), this.getDiscounts())
-      .subscribe();
+    merge<CategoryModel[], DiscountModel[]>(
+      this.getCategories(),
+      this.getDiscounts()
+    ).subscribe();
   }
 
   getDiscounts(): Observable<DiscountModel[]> {
     return this.discountService.getAllDiscount().pipe(
-      tap( (discounts: DiscountModel[]) => {
+      tap((discounts: DiscountModel[]) => {
         console.log('Executing discounts...', discounts);
         this.discounts = discounts;
       })
-    )
+    );
   }
 
   getCategories(): Observable<CategoryModel[]> {
@@ -65,20 +68,22 @@ export class ProductComponent implements OnInit, OnDestroy {
         console.log('Executing categories...', categories);
         this.categories = categories;
       })
-    )
+    );
   }
 
   onClickSave(): void {
     if (this.form.valid) {
       const product: ProductModel = { ...this.form.value };
-      this.productService.saveProduct(product).subscribe(
-        (product: ProductModel) => {
+      this.productService
+        .saveProduct(product)
+        .subscribe((product: ProductModel) => {
           // logic - if request is success
           this.form.reset();
-          alert(`Se ha guardado con exito el usuario: ${product.productId} - ${product.name}` );
+          alert(
+            `Se ha guardado con exito el usuario: ${product.productId} - ${product.name}`
+          );
           this.productService.setChanges(true);
-        }
-      );
+        });
     } else {
       alert('El Formulario no se encuentra valido.');
     }
@@ -86,19 +91,23 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   onChangeTypeOfProduct(): void {
     console.log(this.form.get('typeOfProduct').value);
+    this.form.get('discountApply').setValue(!!this.discountApply);
   }
 
   listenerFieldTypeOfProduct(): void {
-    this.suscribe$ = this.form.get('typeOfProduct').valueChanges.subscribe(
-      (typeOfProduct: string) => {
+    this.suscribe$ = this.form
+      .get('typeOfProduct')
+      .valueChanges.subscribe((typeOfProduct: string) => {
         console.log('Executing lintener type of product: ', typeOfProduct);
-        this.discountApply =
-          this.discounts.find( (discount: DiscountModel) => discount.idProduct.toString() === typeOfProduct && discount.discountApply);
-      }
-    );
+        this.discountApply = this.discounts.find(
+          (discount: DiscountModel) =>
+            discount.idProduct.toString() === typeOfProduct &&
+            discount.discountApply
+        );
+      });
   }
 
   ngOnDestroy(): void {
-      this.suscribe$.unsubscribe();
+    this.suscribe$.unsubscribe();
   }
 }

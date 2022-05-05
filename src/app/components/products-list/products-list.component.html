@@ -27,7 +27,13 @@
         <td>{{ transformType(product.typeOfProduct) }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.price | currency }}</td>
-        <td>{{ transformDiscount(product.typeOfProduct) | percent }}</td>
+        <td>
+          {{
+            transformDiscount(product.typeOfProduct)
+              ? (transformDiscount(product.typeOfProduct) | percent)
+              : "-"
+          }}
+        </td>
         <td>{{ applyDiscount(product) | currency }}</td>
       </tr>
     </tbody>
